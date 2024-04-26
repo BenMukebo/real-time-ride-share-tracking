@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+
+import { useJsApiLoader, GoogleMap } from "@react-google-maps/api";
+import AppNavBar from "./components/AppNavBar";
+import AppFooterBar from "./components/AppFooterBar";
+import { Box, CircularProgress } from "@mui/material";
+
+const center = { lat: 51.1657, lng: 10.4515 };
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { isLoaded } = useJsApiLoader({
+    // process.env.REACT_APP_GOOGLE_MAPS_API_KEY || '',
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+  });
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <AppNavBar />
+
+      {!isLoaded ? (
+        <Box className="loading-spiner">
+          <CircularProgress size={70} />
+        </Box>
+      ) : (
+        <Box sx={{ flexGrow: 1 }} className="map-container">
+          <GoogleMap
+            center={center}
+            zoom={15}
+            mapContainerStyle={{ width: "100%", height: "100%" }}
+          />
+        </Box>
+      )}
+
+      <AppFooterBar />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
