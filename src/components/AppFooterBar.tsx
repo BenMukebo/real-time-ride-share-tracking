@@ -18,7 +18,9 @@ export default function AppFooterBar() {
         onChange={(event, newValue) => {
           setValue(newValue);
         }}
-        sx={{ bgcolor: "transparent"}}
+        sx={{ bgcolor: "transparent",
+          "& .MuiButtonBase-root": { minWidth: "0px" }
+        }}
       >
         <BottomNavigationAction label="" icon={<FavoriteBorderIcon />} />
         <BottomNavigationAction label="" icon={<AccessTimeIcon />} />
