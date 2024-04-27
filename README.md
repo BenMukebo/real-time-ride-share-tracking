@@ -12,6 +12,8 @@ and real-time progress.
 ## Links 🔗
 
 - [Demo Link](https://real-time-share-tracking.vercel.app/)
+- [Google Map React](https://www.npmjs.com/package/google-map-react#google-map-react----)
+- [How to Integrate Google Maps APIs into Your Delivery and Transport App](https://scriptone-solutions.de/en/blogs/how-to-integrate-google-maps-apis-into-your-delivery-and-transport-app.html)
 
 - [Classic Google My Maps Icons](https://www.google.com/maps/d/viewer?mid=1icXjgXJ5da1l2BQjMNgXAI4dlkw&hl=en_US&ll=-0.00700000003837741%2C0.0030000000000196536&z=16)
 
