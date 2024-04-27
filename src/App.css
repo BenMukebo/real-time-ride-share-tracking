@@ -1,0 +1,18 @@
+
+.app-header, .app-footer {
+  background: rgb(85,187,176);
+  background: linear-gradient(90deg, rgba(85,187,176,1) 20%, rgba(110,221,169,1) 40%, rgba(121,216,120,1) 100%);
+}
+
+.map-container {
+  height: 80vh;
+  max-height: 100%;
+  width: 100%;
+}
+
+.loading-spiner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
