@@ -1,34 +1,15 @@
-import "./App.css";
-
 import { useEffect, useState } from "react";
-import AppNavBar from "./components/AppNavBar";
-import AppFooterBar from "./components/AppFooterBar";
-import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import {
   useJsApiLoader,
   GoogleMap,
   Marker,
   DirectionsRenderer,
 } from "@react-google-maps/api";
-
-const center = { lat: -1.939826787816454, lng: 30.0445426438232 }; // Starting Point: Nyabugogo
-const intermediateStops = [
-  { location: { lat: -1.9355377074007851, lng: 30.060163829002217 }, label: "Stop A" },
-  { location: { lat: -1.9358808342336546, lng: 30.08024820994666 }, label: "Stop B" },
-  { location: { lat: -1.9489196023037583, lng: 30.092607828989397 }, label: "Stop C" },
-  { location: { lat: -1.9592132952818164, lng: 30.106684061788073 }, label: "Stop D" },
-  { location: { lat: -1.9487480402200394, lng: 30.126596781356923 }, label: "Stop E" },
-];
-const endingPoint = { location: { lat: -1.9365670876910166, lng: 30.13020167024439 }, label: "Kimironko" };
-
-
-// const stops = [center, ...intermediateStops.map(stop => stop.location), endingPoint];
-type StopSchema = { location: { lat: number; lng: number }; label: string };
-const stops: StopSchema[] = [
-  { location: center, label: "Nyabugogo" },
-  ...intermediateStops,
-  endingPoint,
-];
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
+import AppNavBar from "./components/AppNavBar";
+import AppFooterBar from "./components/AppFooterBar";
+import { center, endingPoint, intermediateStops, stops } from "./constants";
+import "./App.css";
 
 
 function App() {
@@ -57,7 +38,7 @@ function App() {
       waypoints,
       optimizeWaypoints: true,
       travelMode: window.google.maps.TravelMode.DRIVING,
-    }, (results, status ) => {
+    }, (results, status) => {
       if (status === window.google.maps.DirectionsStatus.OK) {
         setDirections(results);
       } else {
@@ -70,24 +51,19 @@ function App() {
     const directionsService = new window.google.maps.DirectionsService();
     const origin = new window.google.maps.LatLng(stops[currentStopIndex].location.lat, stops[currentStopIndex].location.lng);
     const destination = new window.google.maps.LatLng(stops[currentStopIndex + 1].location.lat, stops[currentStopIndex + 1].location.lng);
-    // const currentPoints = new window.google.maps.LatLng(stops[currentStopIndex].location.lat, stops[currentStopIndex].location.lng); 
 
     directionsService.route({
       origin,
       destination,
-      // waypoints,
       optimizeWaypoints: true,
       travelMode: window.google.maps.TravelMode.DRIVING,
-    }, (results, status ) => {
+    }, (results, status) => {
       if (status === window.google.maps.DirectionsStatus.OK) {
         setDistance(results?.routes[0]?.legs[0]?.distance?.text || '');
         setTime(results?.routes[0]?.legs[0]?.duration?.text || '');
-
-      // Automatically move to the next stop after the estimated time
-      // const durationInSeconds = results?.routes[0]?.legs[0]?.duration?.value || 0;
-    } else {
-      console.error(`Error fetching directions: ${status}`);
-    }
+      } else {
+        console.error(`Error fetching directions: ${status}`);
+      }
     });
   };
 
@@ -100,7 +76,6 @@ function App() {
   }, [isLoaded]); // Recalculate route when the map is loaded
 
   useEffect(() => {
-    
     const interval = setInterval(() => {
       if (currentStopIndex < stops.length - 1) {
         calculateNextStopETA(); // Recalculate ETA for the next stop
@@ -111,24 +86,10 @@ function App() {
       }
     }, 7000);
 
-
     return () => {
       clearInterval(interval);
     };
   }, [currentStopIndex]); // Trigger stop change effect
-
-
-
-  // const calculateETANextStop = () => {
-  //   const distanceToNextStop =
-  //     directions?.routes[0]?.legs[currentStopIndex]?.distance?.text || "";
-  //   const timeToNextStop =
-  //     directions?.routes[0]?.legs[currentStopIndex]?.duration?.text || "";
-
-  //   return { distance: distanceToNextStop, time: timeToNextStop };
-  // };
-
-  // const { distance, time } = calculateETANextStop();
 
   return (
     <>
@@ -138,11 +99,9 @@ function App() {
         <Typography variant="h5" component="h5" gutterBottom>
           Nyabugogo - Kimironko
         </Typography>
-
         <Typography variant="body1" component="p">
-        Next stop: {currentStopIndex < stops.length - 1 ? stops[currentStopIndex + 1]?.label : "End"}
+          Next stop: {currentStopIndex < stops.length - 1 ? stops[currentStopIndex + 1]?.label : "End"}
         </Typography>
-
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -168,7 +127,6 @@ function App() {
             zoom={15}
             mapContainerStyle={{ width: "100%", height: "100%" }}
             options={{
-              // disableDefaultUI: true,
               zoomControl: false,
               mapTypeControl: false,
               // streetViewControl: false,
