@@ -34,7 +34,7 @@ const stops: StopSchema[] = [
 function App() {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY, // process.env.
-    libraries: ["places"],
+    libraries: ['places', 'geometry', 'drawing', 'visualization'],
   });
 
   const [currentStopIndex, setCurrentStopIndex] = useState(0);
@@ -66,12 +66,6 @@ function App() {
     });
   }
 
-  useEffect(() => {
-    if (isLoaded) {
-      calculateRoute();
-    }
-  }, [isLoaded]); // Recalculate route when the map is loaded
-
   const calculateNextStopETA = () => {
     const directionsService = new window.google.maps.DirectionsService();
     const origin = new window.google.maps.LatLng(stops[currentStopIndex].location.lat, stops[currentStopIndex].location.lng);
@@ -97,10 +91,19 @@ function App() {
     });
   };
 
+
+  useEffect(() => {
+    if (isLoaded) {
+      calculateRoute();
+      calculateNextStopETA();
+    }
+  }, [isLoaded]); // Recalculate route when the map is loaded
+
   useEffect(() => {
     
     const interval = setInterval(() => {
       if (currentStopIndex < stops.length - 1) {
+        calculateNextStopETA(); // Recalculate ETA for the next stop
         setCurrentStopIndex((prevIndex) => prevIndex + 1);
       } else {
         clearInterval(interval); // Clear interval when all stops are visited
@@ -108,7 +111,6 @@ function App() {
       }
     }, 7000);
 
-    calculateNextStopETA(); // Recalculate ETA for the next stop
 
     return () => {
       clearInterval(interval);
@@ -138,7 +140,7 @@ function App() {
         </Typography>
 
         <Typography variant="body1" component="p">
-          Next stop: {stops[currentStopIndex + 1].label}
+        Next stop: {currentStopIndex < stops.length - 1 ? stops[currentStopIndex + 1]?.label : "End"}
         </Typography>
 
         <Stack
