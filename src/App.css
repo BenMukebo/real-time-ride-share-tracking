@@ -4,8 +4,13 @@
   background: linear-gradient(90deg, rgba(85,187,176,1) 20%, rgba(110,221,169,1) 40%, rgba(121,216,120,1) 100%);
 }
 
+.details-section {
+  padding: 1rem 1.5rem;
+  background-color: rgb(227, 232, 237);
+}
+
 .map-container {
-  height: 80vh;
+  height: 50vh;
   max-height: 100%;
   width: 100%;
 }
