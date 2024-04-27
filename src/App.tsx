@@ -19,7 +19,7 @@ function App() {
   });
 
   const [currentStopIndex, setCurrentStopIndex] = useState(0);
-  const [directions, setDirections] = useState(null);
+  const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
   const [distance, setDistance] = useState('');
   const [time, setTime] = useState('');
 
