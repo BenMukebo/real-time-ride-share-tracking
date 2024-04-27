@@ -78,10 +78,12 @@ function App() {
   useEffect(() => {
     const interval = setInterval(() => {
       if (currentStopIndex < stops.length - 1) {
-        calculateNextStopETA(); // Recalculate ETA for the next stop
+        // Recalculate ETA for the next stop
+        calculateNextStopETA();
         setCurrentStopIndex((prevIndex) => prevIndex + 1);
       } else {
-        clearInterval(interval); // Clear interval when all stops are visited
+        // Clear interval when all stops are visited
+        clearInterval(interval);
         setCurrentStopIndex(0);
       }
     }, 7000);
@@ -106,6 +108,7 @@ function App() {
           direction="row"
           justifyContent="space-between"
           alignItems="center"
+          flexWrap={"wrap"}
         >
           <Typography variant="body1" component="p">
             Distance to next stop: {distance}
